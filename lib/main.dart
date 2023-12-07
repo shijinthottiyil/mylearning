@@ -1,46 +1,40 @@
-///https://docs.flutter.dev/ui#using-material-components
-
+/// https://docs.flutter.dev/ui#handling-gestures
+///
 import 'package:flutter/material.dart';
+
+class MyButton extends StatelessWidget {
+  const MyButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print('MyButton was tapped!');
+      },
+      child: Container(
+        height: 50,
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.lightGreen[500],
+        ),
+        child: const Center(
+          child: Text('Engage'),
+        ),
+      ),
+    );
+  }
+}
 
 void main() {
   runApp(
     const MaterialApp(
-      title: 'Flutter Tutorial',
-      home: TutorialHome(),
+      home: Scaffold(
+        body: Center(
+          child: MyButton(),
+        ),
+      ),
     ),
   );
-}
-
-class TutorialHome extends StatelessWidget {
-  const TutorialHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    ///Scaffold is a layout for the major Material Components.
-    return Scaffold(
-      appBar: AppBar(
-        leading: const IconButton(
-          onPressed: null,
-          icon: Icon(Icons.menu),
-          tooltip: 'Navigation menu',
-        ),
-        title: const Text('Example title'),
-        actions: const [
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.search),
-            tooltip: 'Search',
-          ),
-        ],
-      ),
-      body: const Center(
-        child: Text('Hello, world!'),
-      ),
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Add',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
 }
