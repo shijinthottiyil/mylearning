@@ -31,16 +31,16 @@ class RouteManager {
           /// The first screen to display in the bottom navigation bar.
           GoRoute(
             path: AppRoutes.kHome,
-            builder: (BuildContext context, GoRouterState state) {
-              return const HomeView();
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage(child: const HomeView());
             },
             routes: [
               // The details screen to display stacked on the inner Navigator.
               // This will cover screen A but not the application shell.
               GoRoute(
                 path: AppRoutes.kDetails,
-                builder: (BuildContext context, GoRouterState state) {
-                  return const DetailsView(label: 'Home');
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage(child: DetailsView(label: 'Home'));
                 },
               ),
             ],
@@ -49,8 +49,8 @@ class RouteManager {
           ///Second Screen of the BottomNav
           GoRoute(
             path: AppRoutes.kNotification,
-            builder: (BuildContext context, GoRouterState state) {
-              return const NotificationsView();
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage(child: const NotificationsView());
             },
             routes: [
               // The details screen to display stacked on the inner Navigator.
@@ -67,16 +67,17 @@ class RouteManager {
           ///Thired Screen of the BottomNav
           GoRoute(
             path: AppRoutes.kMessage,
-            builder: (BuildContext context, GoRouterState state) {
-              return const MessagesView();
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage(child: const MessagesView());
             },
             routes: [
               // The details screen to display stacked on the inner Navigator.
               // This will cover screen A but not the application shell.
               GoRoute(
                 path: AppRoutes.kDetails,
-                builder: (BuildContext context, GoRouterState state) {
-                  return const DetailsView(label: 'Messages');
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage(
+                      child: DetailsView(label: 'Messages'));
                 },
               ),
             ],
