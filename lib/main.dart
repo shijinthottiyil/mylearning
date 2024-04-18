@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mylearning/animated_icon_example.dart';
+import 'package:mylearning/implicit/regenerate_color_view.dart';
 
 void main() {
-  runApp(AnimationApp());
+  runApp(const MyApp());
 }
 
-class AnimationApp extends StatelessWidget {
-  const AnimationApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AnimatedIconExample(),
+    return const MaterialApp(
+      home: RegeneateColorView(),
     );
   }
 }
