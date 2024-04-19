@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -37,10 +36,11 @@ class _RegeneateColorViewState extends State<RegeneateColorView> {
             for (int i = 0; i < colorList.length; i++) ...[
               AnimatedContainer(
                 duration: Durations.extralong4,
+                curve: Curves.bounceIn,
+                color: colorList[i],
                 margin: EdgeInsets.all(5),
                 width: 100,
                 height: 100,
-                color: colorList[i],
               ),
             ]
           ],
