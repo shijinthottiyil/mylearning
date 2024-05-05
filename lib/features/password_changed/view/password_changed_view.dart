@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mylearning/features/global_widgets/common_back_button_widget.dart';
 import 'package:mylearning/features/global_widgets/common_styled_button_widget.dart';
-import 'package:mylearning/features/login/view/login_view.dart';
 import 'package:mylearning/features/welcome/view/welcome_view.dart';
 import 'package:mylearning/utils/assets/app_images.dart';
 import 'package:mylearning/utils/decorations/app_padding.dart';
@@ -33,7 +31,7 @@ class PasswordChangedView extends StatelessWidget {
               ),
             ),
             AppSpacing.gapH8,
-            Text(
+            const Text(
               'Your password has been changed\n successfully.',
               textAlign: TextAlign.center,
             ),
@@ -42,7 +40,7 @@ class PasswordChangedView extends StatelessWidget {
               onTap: () {
                 Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(
                   builder: (context) {
-                    return WelcomeView();
+                    return const WelcomeView();
                   },
                 ), (route) => false);
               },

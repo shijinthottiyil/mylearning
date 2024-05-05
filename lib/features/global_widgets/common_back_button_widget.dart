@@ -20,7 +20,7 @@ class CommonBackButtonWidget extends StatelessWidget {
             color: AppColors.kBorder,
           ),
         ),
-        child: Icon(
+        child: const Icon(
           Icons.arrow_back_ios_new_rounded,
         ),
       ),

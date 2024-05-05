@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mylearning/features/global_widgets/common_back_button_widget.dart';
@@ -20,92 +21,94 @@ class RegisterView extends StatelessWidget {
         child: SafeArea(
             child: Padding(
           padding: AppPadding.padSymmetricHorizontal20,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommonBackButtonWidget(),
-              AppSpacing.gapH28,
-              Text(
-                'Hello! Register to get started',
-                style: AppTextStyle.bold.copyWith(
-                  fontSize: 30,
-                  letterSpacing: 1,
+          child: FlipInY(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CommonBackButtonWidget(),
+                AppSpacing.gapH28,
+                Text(
+                  'Hello! Register to get started',
+                  style: AppTextStyle.bold.copyWith(
+                    fontSize: 30,
+                    letterSpacing: 1,
+                  ),
                 ),
-              ),
-              AppSpacing.gapH32,
-              CommonTextFieldWidget(hintText: 'Username'),
-              AppSpacing.gapH8,
-              CommonTextFieldWidget(hintText: 'Email'),
-              AppSpacing.gapH8,
-              CommonTextFieldWidget(hintText: 'Password'),
-              AppSpacing.gapH8,
-              CommonTextFieldWidget(hintText: 'Confirm password'),
-              AppSpacing.gapH32,
-              CommonStyledButtonWidget(onTap: () {}, buttonName: 'Register'),
-              AppSpacing.gapH28,
-              Row(
-                children: <Widget>[
-                  Expanded(child: Divider()),
-                  Text(
-                    "  Or Register with  ",
-                    style: AppTextStyle.semiBold.copyWith(
-                      color: AppColors.kDarkGray,
-                    ),
-                  ),
-                  Expanded(child: Divider()),
-                ],
-              ),
-              AppSpacing.gapH20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Image.asset(
-                    AppImages.kFBButtonImg,
-                    width: 100,
-                    height: 50,
-                  ),
-                  Image.asset(
-                    AppImages.kGoogleButtonImg,
-                    width: 100,
-                    height: 50,
-                  ),
-                  Image.asset(
-                    AppImages.kAppleButtonImg,
-                    width: 100,
-                    height: 50,
-                  ),
-                ],
-              ),
-              AppSpacing.gapH40,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already have an account?\t',
-                    style: AppTextStyle.medium,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) {
-                            return LoginView();
-                          },
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Login Now',
-                      style: AppTextStyle.bold.copyWith(
-                        color: AppColors.kPrimary,
-                        letterSpacing: 1.5,
+                AppSpacing.gapH32,
+                const CommonTextFieldWidget(hintText: 'Username'),
+                AppSpacing.gapH8,
+                const CommonTextFieldWidget(hintText: 'Email'),
+                AppSpacing.gapH8,
+                const CommonTextFieldWidget(hintText: 'Password'),
+                AppSpacing.gapH8,
+                const CommonTextFieldWidget(hintText: 'Confirm password'),
+                AppSpacing.gapH32,
+                CommonStyledButtonWidget(onTap: () {}, buttonName: 'Register'),
+                AppSpacing.gapH28,
+                Row(
+                  children: <Widget>[
+                    const Expanded(child: Divider()),
+                    Text(
+                      "  Or Register with  ",
+                      style: AppTextStyle.semiBold.copyWith(
+                        color: AppColors.kDarkGray,
                       ),
                     ),
-                  )
-                ],
-              )
-            ],
+                    const Expanded(child: Divider()),
+                  ],
+                ),
+                AppSpacing.gapH20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image.asset(
+                      AppImages.kFBButtonImg,
+                      width: 100,
+                      height: 50,
+                    ),
+                    Image.asset(
+                      AppImages.kGoogleButtonImg,
+                      width: 100,
+                      height: 50,
+                    ),
+                    Image.asset(
+                      AppImages.kAppleButtonImg,
+                      width: 100,
+                      height: 50,
+                    ),
+                  ],
+                ),
+                AppSpacing.gapH40,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Already have an account?\t',
+                      style: AppTextStyle.medium,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) {
+                              return const LoginView();
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Login Now',
+                        style: AppTextStyle.bold.copyWith(
+                          color: AppColors.kPrimary,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         )),
       ),

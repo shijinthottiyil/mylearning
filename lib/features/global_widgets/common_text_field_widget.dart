@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mylearning/utils/decorations/app_border_radius.dart';
-import 'package:mylearning/utils/decorations/app_colors.dart';
 import 'package:mylearning/utils/decorations/app_padding.dart';
 
 class CommonTextFieldWidget extends StatelessWidget {
@@ -16,7 +15,7 @@ class CommonTextFieldWidget extends StatelessWidget {
       padding: AppPadding.padSymmetricHorizontal16,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Color(0xffF7F8F9),
+        color: const Color(0xffF7F8F9),
         borderRadius: AppBorderRadius.circular8,
       ),
       child: TextFormField(

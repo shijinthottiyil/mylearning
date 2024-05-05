@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mylearning/features/global_widgets/common_back_button_widget.dart';
@@ -19,56 +20,58 @@ class ForgotPasswordView extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: AppPadding.padSymmetricHorizontal20,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonBackButtonWidget(),
-                AppSpacing.gapH28,
-                Text(
-                  'Forgot Password?',
-                  style: AppTextStyle.bold.copyWith(
-                    fontSize: 30,
-                    letterSpacing: 1,
-                  ),
-                ),
-                AppSpacing.gapH8,
-                Text(
-                  '''Don't worry! It occurs. Please enter the email address linked with your account.''',
-                  style: AppTextStyle.medium.copyWith(
-                    fontSize: 16,
-                    color: AppColors.kGray,
-                  ),
-                ),
-                AppSpacing.gapH32,
-                CommonTextFieldWidget(hintText: 'Enter your email'),
-                AppSpacing.gapH40,
-                CommonStyledButtonWidget(
-                    onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(
-                        builder: (context) {
-                          return OtpVerificationView();
-                        },
-                      ));
-                    },
-                    buttonName: 'Send Code'),
-                AppSpacing.gapH300,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Remember Password?\t',
-                      style: AppTextStyle.medium,
+            child: ZoomIn(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CommonBackButtonWidget(),
+                  AppSpacing.gapH28,
+                  Text(
+                    'Forgot Password?',
+                    style: AppTextStyle.bold.copyWith(
+                      fontSize: 30,
+                      letterSpacing: 1,
                     ),
-                    Text(
-                      'Login',
-                      style: AppTextStyle.bold.copyWith(
-                        color: AppColors.kPrimary,
-                        letterSpacing: 1.5,
+                  ),
+                  AppSpacing.gapH8,
+                  Text(
+                    '''Don't worry! It occurs. Please enter the email address linked with your account.''',
+                    style: AppTextStyle.medium.copyWith(
+                      fontSize: 16,
+                      color: AppColors.kGray,
+                    ),
+                  ),
+                  AppSpacing.gapH32,
+                  const CommonTextFieldWidget(hintText: 'Enter your email'),
+                  AppSpacing.gapH40,
+                  CommonStyledButtonWidget(
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(
+                          builder: (context) {
+                            return const OtpVerificationView();
+                          },
+                        ));
+                      },
+                      buttonName: 'Send Code'),
+                  AppSpacing.gapH300,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Remember Password?\t',
+                        style: AppTextStyle.medium,
                       ),
-                    ),
-                  ],
-                )
-              ],
+                      Text(
+                        'Login',
+                        style: AppTextStyle.bold.copyWith(
+                          color: AppColors.kPrimary,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

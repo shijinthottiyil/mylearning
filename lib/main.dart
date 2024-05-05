@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.kWhite,
         fontFamily: GoogleFonts.urbanist().fontFamily,
-        iconTheme: IconThemeData(color: AppColors.kDark),
+        iconTheme: const IconThemeData(color: AppColors.kDark),
       ),
       home: const WelcomeView(),
     );
