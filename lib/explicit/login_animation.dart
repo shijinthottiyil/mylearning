@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class LoginAnimation extends StatefulWidget {
   const LoginAnimation({super.key});
@@ -9,57 +10,72 @@ class LoginAnimation extends StatefulWidget {
 
 class _LoginAnimationState extends State<LoginAnimation>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-
-  late Animation<double> logoOpacityAnimation;
-
-  // For SlideTransition.
-  late Animation<Offset> position;
+  late final AnimationController slideAnimationController;
+  late final Animation<Offset> slideAnimationValue;
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
+    slideAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
-    logoOpacityAnimation =
-        Tween<double>(begin: 0, end: 1).animate(animationController);
-    position = Tween<Offset>(begin: Offset(-1, -1), end: Offset.zero).animate(
+    slideAnimationValue =
+        Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(
       CurvedAnimation(
-        parent: animationController,
-        curve: Curves.bounceIn,
+        parent: slideAnimationController,
+        curve: Curves.ease,
       ),
     );
-    animationController.forward();
+    slideAnimationController.forward();
+  }
+
+  @override
+  void dispose() {
+    slideAnimationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Explicit Animation'),
+        title: Text('Login Screen Animation'),
       ),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: SlideTransition(
-          position: position,
+          position: slideAnimationValue,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FadeTransition(
-                opacity: logoOpacityAnimation,
-                child: FlutterLogo(
-                  size: 100,
-                ),
+              FlutterLogo(
+                size: 100,
               ),
-              TextField(),
-              TextField(),
-              const SizedBox(
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width,
+                height: 8,
+              ),
+              TextField(
+                decoration:
+                    InputDecoration(filled: true, labelText: 'Enter Data'),
+              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width,
+                height: 8,
+              ),
+              TextField(
+                decoration:
+                    InputDecoration(filled: true, labelText: 'Enter Data'),
+              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width,
                 height: 16,
               ),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {},
-                child: Text('Login'),
+                icon: Icon(Icons.login_rounded),
+                label: Text('Login'),
               ),
             ],
           ),
