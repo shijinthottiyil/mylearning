@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mylearning/explicit/loading_animation_widget.dart';
 import 'package:mylearning/explicit/login_animation.dart';
 import 'package:mylearning/explicit/staggered_list_view.dart';
 import 'package:mylearning/implicit/animated_shopping_cart_button.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StaggerdListView(),
+      home: LoadingAnimationWidget(),
     );
   }
 }
