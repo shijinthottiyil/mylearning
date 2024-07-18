@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mylearning/cubit/counter_cubit.dart';
+import 'package:mylearning/bloc/counter_bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CounterCubit counterCubit = BlocProvider.of<CounterCubit>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: BlocBuilder(
-          bloc: counterCubit,
+        child: BlocBuilder<CounterBloc, int>(
           builder: (context, state) {
             return Text(
               '$state',
@@ -21,9 +19,22 @@ class HomeView extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: counterCubit.increment,
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              context.read<CounterBloc>().add(CounterIncremented());
+            },
+            child: Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              context.read<CounterBloc>().add(CounterDecremented());
+            },
+            child: Icon(Icons.minimize),
+          ),
+        ],
       ),
     );
   }
