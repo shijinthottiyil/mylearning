@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mylearning/bloc/counter_bloc.dart';
-import 'package:mylearning/home_page.dart';
+import 'package:mylearning/cubit/todo_cubit.dart';
+import 'package:mylearning/todo_cubit_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,12 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => CounterBloc(),
-        ),
+        BlocProvider(create: (_) => ToDoCubit()),
       ],
       child: MaterialApp(
-        home: HomeView(),
+        home: ToDoCubitView(),
       ),
     );
   }
