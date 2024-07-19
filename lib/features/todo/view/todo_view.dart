@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mylearning/add_todo_view.dart';
-import 'package:mylearning/cubit/todo_cubit.dart';
-import 'package:mylearning/cubit/todo_model.dart';
+import 'package:mylearning/features/todo/bloc/todo_bloc.dart';
+import 'package:mylearning/features/todo/view/add_todo_view.dart';
 
-class ToDoCubitView extends StatelessWidget {
-  const ToDoCubitView({super.key});
+class ToDoView extends StatelessWidget {
+  const ToDoView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ToDo'),
+        title: Text('ToDo BLoC'),
       ),
-      body: BlocBuilder<ToDoCubit, List<ToDoModel>>(
+      body: BlocBuilder<ToDoBLoC, ToDoState>(
         builder: (context, state) {
           return ListView.builder(
             itemBuilder: (context, index) {
-              final ToDoModel toDoModel = state[index];
               return ListTile(
-                title: Text(toDoModel.title),
+                title: Text('${state.listOfToDoModel[index].title}'),
               );
             },
-            itemCount: state.length,
+            itemCount: state.listOfToDoModel.length,
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
+          Navigator.push(
+            context,
             MaterialPageRoute(
               builder: (context) {
                 return AddToDoView();

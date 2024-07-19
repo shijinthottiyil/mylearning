@@ -6,6 +6,6 @@ class ToDoModel {
 
   @override
   String toString() {
-    return 'ToDoModel(title:$title,dateTime:$dateTime)';
+    return 'ToDoModel(title: $title,dateTime: $dateTime)';
   }
 }

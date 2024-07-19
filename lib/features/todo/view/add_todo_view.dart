@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mylearning/cubit/todo_cubit.dart';
+import 'package:mylearning/features/todo/bloc/todo_bloc.dart';
 
 class AddToDoView extends StatefulWidget {
   const AddToDoView({super.key});
@@ -25,7 +25,7 @@ class _AddToDoViewState extends State<AddToDoView> {
         title: Text('Add ToDo'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: TextField(
           controller: _textEditingController,
           decoration: InputDecoration.collapsed(hintText: 'Title'),
@@ -33,7 +33,9 @@ class _AddToDoViewState extends State<AddToDoView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<ToDoCubit>().addTodo(title: _textEditingController.text);
+          context.read<ToDoBLoC>().add(
+                AddToDo(title: _textEditingController.text),
+              );
           Navigator.pop(context);
         },
         child: Icon(Icons.done),
