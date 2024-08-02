@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mylearning/feature/todo/bloc/todo_bloc.dart';
 import 'package:mylearning/feature/todo/model/todo_model.dart';
 import 'package:mylearning/util/ui/constant/app_border_radius.dart';
@@ -40,15 +41,67 @@ class _ToDoViewState extends State<ToDoView> {
       body: BlocConsumer<TodoBloc, TodoState>(
         builder: (context, state) {
           if (state is TodoDataState) {
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                final ToDoModel toDoModel = state.toDoModelList[index];
-                return ListTile(
-                  title: Text(toDoModel.name),
-                );
-              },
-              separatorBuilder: (context, index) => AppSpacing.gapH4,
-              itemCount: state.toDoModelList.length,
+            if (state.toDoModelList.isEmpty) {
+              return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Add ToDo Using '),
+                    Icon(
+                      Icons.add_circle_outline,
+                      color: AppColors.kBlack,
+                      size: 28,
+                    ),
+                    Text(' Button Below')
+                  ],
+                ),
+              );
+            }
+            return Padding(
+              padding: AppPadding.padSymmetricHorizontal16,
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  final ToDoModel toDoModel = state.toDoModelList[index];
+                  return Slidable(
+                    // The end action pane is the one at the right or the bottom side.
+                    endActionPane: const ActionPane(
+                      motion: DrawerMotion(),
+                      children: [
+                        SlidableAction(
+                          // An action can be bigger than the others.
+
+                          onPressed: doNothing,
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete_rounded,
+                        ),
+                      ],
+                    ),
+                    child: ExpansionTile(
+                      backgroundColor: AppColors.kWhite,
+                      collapsedBackgroundColor: AppColors.kWhite,
+                      title: Text(
+                        toDoModel.name,
+                        style: AppTypography.kBold12,
+                      ),
+                      collapsedShape: BeveledRectangleBorder(
+                        borderRadius: AppBorderRadius.circular2,
+                        side: BorderSide(color: AppColors.kBlack, width: 0.1),
+                      ),
+                      shape: BeveledRectangleBorder(
+                        borderRadius: AppBorderRadius.circular2,
+                        side: BorderSide(color: AppColors.kBlack, width: 0.1),
+                      ),
+                      childrenPadding:
+                          EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                      expandedAlignment: Alignment.centerLeft,
+                      children: [Text(toDoModel.description)],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => AppSpacing.gapH16,
+                itemCount: state.toDoModelList.length,
+              ),
             );
           }
           return Container();
@@ -199,3 +252,5 @@ InputDecoration _inputDecoration({required String hintText}) {
     filled: true,
   );
 }
+
+void doNothing(BuildContext context) {}

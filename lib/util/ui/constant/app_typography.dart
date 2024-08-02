@@ -7,6 +7,11 @@ class AppTypography {
     fontWeight: FontWeight.bold,
     letterSpacing: 0.5,
   );
+  static const kBold16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 0.5,
+  );
 
   // Regular.
   static const kRegular12 = TextStyle(
