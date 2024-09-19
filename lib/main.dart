@@ -2,6 +2,7 @@
 /// using flutter
 
 import 'package:flutter/material.dart';
+import 'package:mylearning/custom_painter/draw_circle_on_canvas.dart';
 import 'package:mylearning/custom_painter/view/custom_paint_view.dart';
 
 void main() {
@@ -13,8 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CustomPaintView(),
-    );
+    return const MaterialApp(home: DrawCircleOnCanvas());
   }
 }

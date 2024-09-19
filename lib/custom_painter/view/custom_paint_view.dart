@@ -8,9 +8,7 @@ class CustomPaintView extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 300,
-          height: 300,
-          color: Colors.grey.shade300,
+          color: Colors.black,
           child: CustomPaint(
             size: const Size(300, 300),
             painter: MyCustomPainter(),
@@ -25,9 +23,10 @@ class MyCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color = Colors.red;
+    paint.color = Colors.white;
+    paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 10;
-    canvas.drawLine(Offset.zero, Offset(size.width, 0), paint);
+    canvas.drawCircle(Offset(size.width / 2, size.height / 2), 40, paint);
   }
 
   @override
