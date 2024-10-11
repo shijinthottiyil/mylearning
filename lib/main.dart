@@ -1,40 +1,59 @@
-/// https://docs.flutter.dev/ui#handling-gestures
-///
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class MyButton extends StatelessWidget {
-  const MyButton({super.key});
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print('MyButton was tapped!');
+    return GetMaterialApp(
+      home: App(),
+      locale: Locale('pt', 'BR'),
+      translationsKeys: {
+        'en_US': {
+          'title': 'Hello from US',
+        },
+        'pt_BR': {
+          'title': 'Ola do Brasil',
+        }
       },
-      child: Container(
-        height: 50,
-        padding: const EdgeInsets.all(8),
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.lightGreen[500],
-        ),
-        child: const Center(
-          child: Text('Engage'),
-        ),
-      ),
     );
   }
 }
 
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: MyButton(),
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'title'.tr,
         ),
       ),
-    ),
-  );
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Get.updateLocale(Locale('en', 'US'));
+              },
+              child: Text('Change locale to English'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.updateLocale(Locale('pt', 'BR'));
+              },
+              child: Text('Change locale to BRASIL'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
