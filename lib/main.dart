@@ -1,125 +1,226 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:fawry_sdk/fawry_sdk.dart';
+import 'package:fawry_sdk/fawry_utils.dart';
+import 'package:fawry_sdk/model/bill_item.dart';
+import 'package:fawry_sdk/model/fawry_launch_model.dart';
+import 'package:fawry_sdk/model/launch_customer_model.dart';
+import 'package:fawry_sdk/model/launch_merchant_model.dart';
+import 'package:fawry_sdk/model/payment_methods.dart';
+import 'package:fawry_sdk/model/response.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+class Constants {
+  static const String merchantCode = "770000019834";
+  static const String secureKey = "6c65ee7b-9a31-49fb-9630-ca5546f6037a";
+  static const String baseUrl = "https://atfawry.fawrystaging.com/";
+}
+
+class FawryService {
+  static LaunchMerchantModel getMerchantModel() {
+    return LaunchMerchantModel(
+      merchantCode: Constants.merchantCode,
+      merchantRefNum: FawryUtils.randomAlphaNumeric(10),
+      secureKey: Constants.secureKey,
+    );
+  }
+
+  Future<void> startPayment(FawryLaunchModel model) async {
+    try {
+      await FawrySDK.instance.startPayment(
+        launchModel: model,
+        baseURL: Constants.baseUrl,
+        lang: FawrySDK.LANGUAGE_ENGLISH,
+      );
+    } catch (e) {
+      debugPrint('Error starting payment: $e');
+    }
+  }
+
+  Future<void> openCardsManager(FawryLaunchModel model) async {
+    try {
+      await FawrySDK.instance.openCardsManager(
+        launchModel: model,
+        baseURL: Constants.baseUrl,
+        lang: FawrySDK.LANGUAGE_ENGLISH,
+      );
+    } catch (e) {
+      debugPrint('Error opening cards manager: $e');
+    }
+  }
+}
+
+BillItem item = BillItem(
+  itemId: 'ITEM_ID',
+  description: '',
+  quantity: 5,
+  price: 50,
+);
+
+List<BillItem> chargeItems = [item];
+
+LaunchCustomerModel customerModel = LaunchCustomerModel(
+  customerProfileId: '533518',
+  customerName: 'John Doe',
+  customerEmail: 'john.doe@xyz.com',
+  customerMobile: '+201000000000',
+);
+
+FawryLaunchModel model = FawryLaunchModel(
+  allow3DPayment: true,
+  chargeItems: chargeItems,
+  launchCustomerModel: customerModel,
+  launchMerchantModel: FawryService.getMerchantModel(),
+  skipLogin: true,
+  skipReceipt: false,
+  payWithCardToken: false,
+  paymentMethods: PaymentMethods.ALL,
+);
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Fawry SDK Flutter',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData.dark(
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late StreamSubscription? _fawryCallbackResultStream;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    initSDKCallback();
+  }
+
+  @override
+  void dispose() {
+    _fawryCallbackResultStream?.cancel();
+    super.dispose();
+  }
+
+  // Initialize the Fawry SDK callback
+  Future<void> initSDKCallback() async {
+    try {
+      _fawryCallbackResultStream =
+          FawrySDK.instance.callbackResultStream().listen((event) {
+        setState(() {
+          ResponseStatus response = ResponseStatus.fromJson(jsonDecode(event));
+          handleResponse(response);
+        });
+      });
+    } catch (ex) {
+      debugPrint(ex.toString());
+    }
+  }
+
+  // Handle the response from Fawry SDK
+  void handleResponse(ResponseStatus response) {
+    switch (response.status) {
+      case FawrySDK.RESPONSE_SUCCESS:
+        {
+          debugPrint('Message: ${response.message}');
+          debugPrint('Json Response: ${response.data}');
+        }
+        break;
+      case FawrySDK.RESPONSE_ERROR:
+        {
+          debugPrint('Error: ${response.message}');
+        }
+        break;
+      case FawrySDK.RESPONSE_PAYMENT_COMPLETED:
+        {
+          debugPrint(
+              'Payment Completed: ${response.message}, ${response.data}');
+        }
+        break;
+    }
+  }
+
+  // Get the current platform
+  String currentPlatform() {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return 'Current platform --> Android';
+      case TargetPlatform.iOS:
+        return 'Current platform --> iOS';
+      default:
+        return 'Current platform --> Unknown';
+    }
+  }
+
+  // Initialize Fawry SDK with required parameters
+  Future<void> startPayment() async {
+    model.launchMerchantModel.merchantRefNum =
+        FawryUtils.randomAlphaNumeric(10);
+    await FawryService().startPayment(model);
+  }
+
+  Future<void> openCardsManager() async {
+    model.launchMerchantModel.merchantRefNum =
+        FawryUtils.randomAlphaNumeric(10);
+    await FawryService().openCardsManager(model);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Fawry SDK Flutter example'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(currentPlatform()),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await startPayment();
+                  },
+                  child: const Text('Checkout / Pay'),
+                ),
+                const SizedBox(height: 5.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    await openCardsManager();
+                  },
+                  child: const Text('Manage Cards'),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
