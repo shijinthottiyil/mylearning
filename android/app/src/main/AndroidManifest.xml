@@ -1,8 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="mylearning">           
+        android:label="mylearning"
+        tools:replace="android:label,android:allowBackup">          
         <activity
             android:name=".MainActivity"
             android:exported="true"
